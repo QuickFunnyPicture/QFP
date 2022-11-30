@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using QFP.App.Windows;
 using QFP.Core.Graphic;
 using QFP.Core.Settings;
 
@@ -70,6 +71,30 @@ public partial class EditorWindow : Window
         _isDrawMode = false;
     }
 
+    private void ColorSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+        UpdatePickedColor();
+    }
+
+    private void MenuItem_NewProject_Click(object sender, RoutedEventArgs e)
+    {
+        var cp = new CreateProjectWindow();
+        cp.ShowDialog();
+
+        if (!cp.IsCancelled)
+        {
+            Image = new QFPImage(new ImageSettings
+            {
+                Width = cp.ImageWidth,
+                Height = cp.ImageHeight,
+                DpiX = cp.Dpi,
+                DpiY = cp.Dpi
+            });
+
+            Image_Canvas.Source = Image.Bitmap;
+        }
+    }
+
     private void UpdatePickedColor()
     {
         var colorBitmap = new RenderTargetBitmap(128, 128, 72, 72, PixelFormats.Pbgra32);
@@ -86,10 +111,5 @@ public partial class EditorWindow : Window
         Image_PickedColor.Source = colorBitmap;
 
         colorBitmap.Render(colorVisual);
-    }
-
-    private void ColorSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-    {
-        UpdatePickedColor();
     }
 }

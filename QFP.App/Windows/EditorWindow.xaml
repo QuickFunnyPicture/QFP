@@ -1,4 +1,4 @@
-﻿<Window x:Class="QFP.App.EditorWindow"
+<Window x:Class="QFP.App.EditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         Title="Editor" Height="450" Width="800"
         Background="SlateGray">
     <Grid>
-        <Grid Margin="0,0,688,0">
+        <Grid Margin="0,24,688,0">
             <Button x:Name="Button_BrushMode" Content="Brush" HorizontalAlignment="Left" Margin="15,10,0,0" VerticalAlignment="Top" Click="Button_BrushMode_Click"/>
             <Button x:Name="Button_EraseMode" Content="Eraser" HorizontalAlignment="Left" Margin="14,35,0,0" VerticalAlignment="Top" Click="Button_EraseMode_Click"/>
             <Slider x:Name="Slider_Red" Margin="24,67,0,0" VerticalAlignment="Top" Maximum="255" HorizontalAlignment="Left" Width="64" ValueChanged="ColorSlider_ValueChanged"/>
@@ -18,8 +18,26 @@
             <Label Content="B" Margin="7,109,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="17"/>
             <Image x:Name="Image_PickedColor" Height="65" Margin="88,67,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="20" Stretch="None"/>
         </Grid>
-        <Grid Margin="117,0,0,0" Background="DimGray" x:Name="Grid_Canvas" MouseEnter="Grid_Canvas_MouseEnter" MouseLeave="Grid_Canvas_MouseLeave">
-            <Image x:Name="Image_Canvas" Margin="10,10,13,18" MouseMove="Image_Canvas_MouseMove"/>
+        <Grid Margin="117,24,0,0" Background="DimGray" x:Name="Grid_Canvas" MouseEnter="Grid_Canvas_MouseEnter" MouseLeave="Grid_Canvas_MouseLeave">
+            <Image x:Name="Image_Canvas" Margin="12,14,11,14" MouseMove="Image_Canvas_MouseMove"/>
+        </Grid>
+        <Grid Background="LightSlateGray" Height="20" VerticalAlignment="Top">
+            <ToolBarPanel>
+                <Menu Height="20" Background="{x:Null}">
+                    <MenuItem Header="File">
+                        <MenuItem x:Name="MenuItem_NewProject" Header="New Project..." Click="MenuItem_NewProject_Click"/>
+                        <MenuItem Header="Load Project..."/>
+                        <Separator/>
+                        <MenuItem Header="Save"/>
+                        <MenuItem Header="Save as..."/>
+                        <Separator/>
+                        <MenuItem Header="Export Image">
+                            <MenuItem Header="PNG"/>
+                            <MenuItem Header="JPG"/>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+            </ToolBarPanel>
         </Grid>
 
     </Grid>
