@@ -6,36 +6,39 @@ using System.Windows.Media.Imaging;
 using QFP.App.Windows;
 using QFP.Core.Graphic;
 using QFP.Core.Settings;
+using QFP.Core.Tools;
 
 namespace QFP.App;
 
 public partial class EditorWindow : Window
 {
-    private QFPImage Image;
+    private ITool Tool;
 
     private bool _isDrawMode = true;
 
     private SolidColorBrush _currentBrush = Brushes.Black;
 
+    private ImageSettings Settings;
+
     public EditorWindow()
     {
         InitializeComponent();
-
-        Image = new QFPImage(new ImageSettings
+        Settings = new ImageSettings
         {
             Width = 512,
             Height = 512,
             DpiX = 72,
             DpiY = 72
-        });
+        };
+        Tool = new BrushTool(Settings);
 
-        Image_Canvas.Source = Image.Bitmap;
+        Image_Canvas.Source = Tool.GetBitmap();
 
         UpdatePickedColor();
     }
     private void Grid_Canvas_MouseEnter(object sender, MouseEventArgs e)
     {
-        var cursor = _isDrawMode ? Cursors.Pen : Cursors.Hand;
+        var cursor = _isDrawMode ? Cursors.Pen : Cursors.Cross;
         Cursor = cursor;
     }
 
@@ -53,11 +56,11 @@ public partial class EditorWindow : Window
             var x = Math.Floor(controlPosition.X * imageControl.Source.Width / imageControl.ActualWidth);
             var y = Math.Floor(controlPosition.Y * imageControl.Source.Height / imageControl.ActualHeight);
             var point = new Point(x, y);
-
+            var point2 = point;
             var brush = _isDrawMode ? _currentBrush : Brushes.White;
-            Image.DrawByBrush(point, brush, brushSize: (byte)(_isDrawMode ? 2 : 10));
+            Tool.Draw(brush, point, point2, size: (byte)(_isDrawMode ? 2 : 10), radius:(byte)(_isDrawMode ? 2 : 10));
 
-            Image_Canvas.Source = Image.Bitmap;
+            Image_Canvas.Source = Tool.GetBitmap();
         }
     }
 
@@ -83,21 +86,22 @@ public partial class EditorWindow : Window
 
         if (!cp.IsCancelled)
         {
-            Image = new QFPImage(new ImageSettings
+            Settings = new ImageSettings
             {
                 Width = cp.ImageWidth,
                 Height = cp.ImageHeight,
                 DpiX = cp.Dpi,
                 DpiY = cp.Dpi
-            });
+            };
+            Tool = new BrushTool(Settings);
 
-            Image_Canvas.Source = Image.Bitmap;
+            Image_Canvas.Source = Tool.GetBitmap();
         }
     }
 
     private void UpdatePickedColor()
     {
-        var colorBitmap = new RenderTargetBitmap(128, 128, 72, 72, PixelFormats.Pbgra32);
+        var colorBitmap = new RenderTargetBitmap(100, 100, 1, 1, PixelFormats.Pbgra32);
 
         var colorVisual = new DrawingVisual();
 
