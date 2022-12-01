@@ -12,16 +12,15 @@ namespace QFP.App;
 
 public partial class EditorWindow : Window
 {
-    //private ITool Tool;
     private Canvas Canvas { get; set; }
+
     private ITool CurrentTool { get; set; }
 
-    private bool _isDrawMode = true;
+    private ImageSettings Settings { get; set; }
 
-    private ImageSettings Settings;
+    private Cursor ToolCursor { get; set; }
 
     private BrushTool BrushTool { get; set; }
-
     private BrushTool EraseTool { get; set; }
 
     public EditorWindow()
@@ -35,9 +34,14 @@ public partial class EditorWindow : Window
             DpiX = 72,
             DpiY = 72
         };
+
         Canvas = new Canvas(Settings);
+
         BrushTool = new BrushTool(Brushes.Black, 2, 2);
         EraseTool = new BrushTool(Brushes.White, 2, 10);
+
+        CurrentTool = BrushTool;
+        ToolCursor = Cursors.Pen;
 
         Image_Canvas.Source = Canvas.Bitmap;
 
@@ -45,8 +49,7 @@ public partial class EditorWindow : Window
     }
     private void Grid_Canvas_MouseEnter(object sender, MouseEventArgs e)
     {
-        var cursor = _isDrawMode ? Cursors.Pen : Cursors.Cross;
-        Cursor = cursor;
+        Cursor = ToolCursor;
     }
 
     private void Grid_Canvas_MouseLeave(object sender, MouseEventArgs e)
@@ -65,7 +68,6 @@ public partial class EditorWindow : Window
             var point = new Point(x, y);
             var point2 = point;
             Canvas.Draw(CurrentTool, point, point2);
-            //Tool.Draw(brush, point, point2, size: (byte)(_isDrawMode ? 2 : 10), radius:(byte)(_isDrawMode ? 2 : 10));
 
             Image_Canvas.Source = Canvas.Bitmap;
         }
@@ -74,11 +76,13 @@ public partial class EditorWindow : Window
     private void Button_BrushMode_Click(object sender, RoutedEventArgs e)
     {
         CurrentTool = BrushTool;
+        ToolCursor = Cursors.Pen;
     }
 
     private void Button_EraseMode_Click(object sender, RoutedEventArgs e)
     {
         CurrentTool = EraseTool;
+        ToolCursor = Cursors.Cross;
     }
 
     private void ColorSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
