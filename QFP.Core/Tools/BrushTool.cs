@@ -11,42 +11,12 @@ using System.Windows.Media.Imaging;
 namespace QFP.Core.Tools;
 public class BrushTool : ITool
 {
-    private ImageSettings ImageSettings { get; set; }
 
-    private RenderTargetBitmap Bitmap { get; set; }
+    public Brush Brush { get; set; }
+    public byte Size { get; set; }
+    public byte Radius { get; set; }
 
-    public BrushTool(ImageSettings settings)
-    {
-        if (settings == null)
-        {
-            throw new ArgumentNullException();
-        }
-
-        if (settings.Width <= 0 || settings.Height <= 0)
-        {
-            throw new ArgumentException("Width or height is lower than one px");
-        }
-
-        if (settings.DpiX <= 0 || settings.DpiY <= 0)
-        {
-            throw new ArgumentException("DPI is lower than one");
-        }
-
-        ImageSettings = settings;
-
-        Bitmap = new RenderTargetBitmap(settings.Width, settings.Height, settings.DpiX, settings.DpiY, PixelFormats.Pbgra32);
-
-        var visual = new DrawingVisual();
-
-        using (var r = visual.RenderOpen())
-        {
-            r.DrawEllipse(Brushes.White, null, new Point(0, 0), settings.Width * settings.Width, settings.Height * settings.Height);
-        }
-
-        Bitmap.Render(visual);
-    }
-
-    public void Draw(Brush brush, Point pointStart, Point pointEnd, byte size, byte radius)
+    public BrushTool(Brush brush, byte size, byte radius)
     {
         if (brush == null)
         {
@@ -57,19 +27,26 @@ public class BrushTool : ITool
         {
             throw new ArgumentException("Brush size is lower than one");
         }
+        if (radius <= 1)
+        {
+            throw new ArgumentException("Radius size is lower than one");
+        }
+        Brush = brush;
+        Size = size;
+        Radius = radius;
+    }
 
+    public RenderTargetBitmap Draw(Point pointStart, Point pointEnd, RenderTargetBitmap currentBitmap)
+    {
         var visual = new DrawingVisual();
 
         using (var r = visual.RenderOpen())
         {
-            r.DrawEllipse(brush, null, pointStart, radius, radius);
+            r.DrawEllipse(Brush, null, pointStart, Size, Radius);
         }
+        currentBitmap.Render(visual);
 
-        Bitmap.Render(visual);
+        return currentBitmap;
     }
 
-    public RenderTargetBitmap GetBitmap()
-    {
-        return Bitmap;
-    }
 }

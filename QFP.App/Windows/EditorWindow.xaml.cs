@@ -12,17 +12,22 @@ namespace QFP.App;
 
 public partial class EditorWindow : Window
 {
-    private ITool Tool;
+    //private ITool Tool;
+    private Canvas Canvas { get; set; }
+    private ITool CurrentTool { get; set; }
 
     private bool _isDrawMode = true;
 
-    private SolidColorBrush _currentBrush = Brushes.Black;
-
     private ImageSettings Settings;
+
+    private BrushTool BrushTool { get; set; }
+
+    private BrushTool EraseTool { get; set; }
 
     public EditorWindow()
     {
         InitializeComponent();
+
         Settings = new ImageSettings
         {
             Width = 512,
@@ -30,9 +35,11 @@ public partial class EditorWindow : Window
             DpiX = 72,
             DpiY = 72
         };
-        Tool = new BrushTool(Settings);
+        Canvas = new Canvas(Settings);
+        BrushTool = new BrushTool(Brushes.Black, 2, 2);
+        EraseTool = new BrushTool(Brushes.White, 2, 10);
 
-        Image_Canvas.Source = Tool.GetBitmap();
+        Image_Canvas.Source = Canvas.Bitmap;
 
         UpdatePickedColor();
     }
@@ -57,21 +64,21 @@ public partial class EditorWindow : Window
             var y = Math.Floor(controlPosition.Y * imageControl.Source.Height / imageControl.ActualHeight);
             var point = new Point(x, y);
             var point2 = point;
-            var brush = _isDrawMode ? _currentBrush : Brushes.White;
-            Tool.Draw(brush, point, point2, size: (byte)(_isDrawMode ? 2 : 10), radius:(byte)(_isDrawMode ? 2 : 10));
+            Canvas.Draw(CurrentTool, point, point2);
+            //Tool.Draw(brush, point, point2, size: (byte)(_isDrawMode ? 2 : 10), radius:(byte)(_isDrawMode ? 2 : 10));
 
-            Image_Canvas.Source = Tool.GetBitmap();
+            Image_Canvas.Source = Canvas.Bitmap;
         }
     }
 
     private void Button_BrushMode_Click(object sender, RoutedEventArgs e)
     {
-        _isDrawMode = true;
+        CurrentTool = BrushTool;
     }
 
     private void Button_EraseMode_Click(object sender, RoutedEventArgs e)
     {
-        _isDrawMode = false;
+        CurrentTool = EraseTool;
     }
 
     private void ColorSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -93,9 +100,9 @@ public partial class EditorWindow : Window
                 DpiX = cp.Dpi,
                 DpiY = cp.Dpi
             };
-            Tool = new BrushTool(Settings);
+            Canvas = new Canvas(Settings);
 
-            Image_Canvas.Source = Tool.GetBitmap();
+            Image_Canvas.Source = Canvas.Bitmap;
         }
     }
 
@@ -107,9 +114,9 @@ public partial class EditorWindow : Window
 
         using (var r = colorVisual.RenderOpen())
         {
-            _currentBrush = new SolidColorBrush(Color.FromRgb((byte)Slider_Red.Value, (byte)Slider_Green.Value, (byte)Slider_Blue.Value));
+            BrushTool.Brush = new SolidColorBrush(Color.FromRgb((byte)Slider_Red.Value, (byte)Slider_Green.Value, (byte)Slider_Blue.Value));
 
-            r.DrawEllipse(_currentBrush, null, new Point(0, 0), 1000, 1000);
+            r.DrawEllipse(BrushTool.Brush, null, new Point(0, 0), 1000, 1000);
         }
 
         Image_PickedColor.Source = colorBitmap;
