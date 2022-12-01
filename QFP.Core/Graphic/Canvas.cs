@@ -1,17 +1,23 @@
-﻿using System.Windows;
+using QFP.Core.Settings;
+using QFP.Core.Tools;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using QFP.Core.Settings;
 
 namespace QFP.Core.Graphic;
-
-public class QFPImage
+public class Canvas
 {
-    public ImageSettings ImageSettings { get; set; }
+    public ITool Tool;
 
-    public RenderTargetBitmap Bitmap { get; private set; }
+    public ImageSettings ImageSettings;
+    public RenderTargetBitmap Bitmap { get; set; }
 
-    public QFPImage(ImageSettings settings)
+    public Canvas(ImageSettings settings)
     {
         if (settings == null)
         {
@@ -42,28 +48,8 @@ public class QFPImage
         Bitmap.Render(visual);
     }
 
-    public RenderTargetBitmap DrawByBrush(Point position, Brush brush, byte brushSize)
+    public void Draw(ITool tool, Point pointStart, Point pointEnd)
     {
-        if (brushSize <= 0)
-        {
-            throw new ArgumentException("Brush size is lower than one");
-        }
-
-        if (brush == null)
-        {
-            throw new ArgumentNullException();
-        }
-
-        var visual = new DrawingVisual();
-
-        using (var r = visual.RenderOpen())
-        {
-            var radius = brushSize;
-            r.DrawEllipse(brush, null, position, radius, radius);
-        }
-
-        Bitmap.Render(visual);
-
-        return Bitmap;
+        Bitmap = tool.Draw(pointStart, pointEnd, Bitmap);
     }
 }

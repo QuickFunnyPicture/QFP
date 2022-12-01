@@ -6,37 +6,50 @@ using System.Windows.Media.Imaging;
 using QFP.App.Windows;
 using QFP.Core.Graphic;
 using QFP.Core.Settings;
+using QFP.Core.Tools;
 
 namespace QFP.App;
 
 public partial class EditorWindow : Window
 {
-    private QFPImage Image;
+    private Canvas Canvas { get; set; }
 
-    private bool _isDrawMode = true;
+    private ITool CurrentTool { get; set; }
 
-    private SolidColorBrush _currentBrush = Brushes.Black;
+    private ImageSettings Settings { get; set; }
+
+    private Cursor ToolCursor { get; set; }
+
+    private BrushTool BrushTool { get; set; }
+    private BrushTool EraseTool { get; set; }
 
     public EditorWindow()
     {
         InitializeComponent();
 
-        Image = new QFPImage(new ImageSettings
+        Settings = new ImageSettings
         {
             Width = 512,
             Height = 512,
             DpiX = 72,
             DpiY = 72
-        });
+        };
 
-        Image_Canvas.Source = Image.Bitmap;
+        Canvas = new Canvas(Settings);
+
+        BrushTool = new BrushTool(Brushes.Black, 2, 2);
+        EraseTool = new BrushTool(Brushes.White, 2, 10);
+
+        CurrentTool = BrushTool;
+        ToolCursor = Cursors.Pen;
+
+        Image_Canvas.Source = Canvas.Bitmap;
 
         UpdatePickedColor();
     }
     private void Grid_Canvas_MouseEnter(object sender, MouseEventArgs e)
     {
-        var cursor = _isDrawMode ? Cursors.Pen : Cursors.Hand;
-        Cursor = cursor;
+        Cursor = ToolCursor;
     }
 
     private void Grid_Canvas_MouseLeave(object sender, MouseEventArgs e)
@@ -53,22 +66,23 @@ public partial class EditorWindow : Window
             var x = Math.Floor(controlPosition.X * imageControl.Source.Width / imageControl.ActualWidth);
             var y = Math.Floor(controlPosition.Y * imageControl.Source.Height / imageControl.ActualHeight);
             var point = new Point(x, y);
+            var point2 = point;
+            Canvas.Draw(CurrentTool, point, point2);
 
-            var brush = _isDrawMode ? _currentBrush : Brushes.White;
-            Image.DrawByBrush(point, brush, brushSize: (byte)(_isDrawMode ? 2 : 10));
-
-            Image_Canvas.Source = Image.Bitmap;
+            Image_Canvas.Source = Canvas.Bitmap;
         }
     }
 
     private void Button_BrushMode_Click(object sender, RoutedEventArgs e)
     {
-        _isDrawMode = true;
+        CurrentTool = BrushTool;
+        ToolCursor = Cursors.Pen;
     }
 
     private void Button_EraseMode_Click(object sender, RoutedEventArgs e)
     {
-        _isDrawMode = false;
+        CurrentTool = EraseTool;
+        ToolCursor = Cursors.Cross;
     }
 
     private void ColorSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -83,29 +97,30 @@ public partial class EditorWindow : Window
 
         if (!cp.IsCancelled)
         {
-            Image = new QFPImage(new ImageSettings
+            Settings = new ImageSettings
             {
                 Width = cp.ImageWidth,
                 Height = cp.ImageHeight,
                 DpiX = cp.Dpi,
                 DpiY = cp.Dpi
-            });
+            };
+            Canvas = new Canvas(Settings);
 
-            Image_Canvas.Source = Image.Bitmap;
+            Image_Canvas.Source = Canvas.Bitmap;
         }
     }
 
     private void UpdatePickedColor()
     {
-        var colorBitmap = new RenderTargetBitmap(128, 128, 72, 72, PixelFormats.Pbgra32);
+        var colorBitmap = new RenderTargetBitmap(100, 100, 1, 1, PixelFormats.Pbgra32);
 
         var colorVisual = new DrawingVisual();
 
         using (var r = colorVisual.RenderOpen())
         {
-            _currentBrush = new SolidColorBrush(Color.FromRgb((byte)Slider_Red.Value, (byte)Slider_Green.Value, (byte)Slider_Blue.Value));
+            BrushTool.Brush = new SolidColorBrush(Color.FromRgb((byte)Slider_Red.Value, (byte)Slider_Green.Value, (byte)Slider_Blue.Value));
 
-            r.DrawEllipse(_currentBrush, null, new Point(0, 0), 1000, 1000);
+            r.DrawEllipse(BrushTool.Brush, null, new Point(0, 0), 1000, 1000);
         }
 
         Image_PickedColor.Source = colorBitmap;
