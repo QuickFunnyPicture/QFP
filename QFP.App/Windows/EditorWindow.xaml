@@ -32,7 +32,7 @@
                         <MenuItem Header="Save as..."/>
                         <Separator/>
                         <MenuItem Header="Export Image">
-                            <MenuItem Header="PNG"/>
+                            <MenuItem Header="PNG" Click="ExportPNG_Click"/>
                             <MenuItem Header="JPG"/>
                         </MenuItem>
                     </MenuItem>

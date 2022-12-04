@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 using QFP.App.Windows;
 using QFP.Core.Graphic;
 using QFP.Core.Settings;
@@ -126,5 +127,18 @@ public partial class EditorWindow : Window
         Image_PickedColor.Source = colorBitmap;
 
         colorBitmap.Render(colorVisual);
+    }
+
+    private void ExportPNG_Click(object sender, RoutedEventArgs e)
+    {
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        openFileDialog.Multiselect = true;
+        openFileDialog.Title = "Select a picture";
+        openFileDialog.Filter = "Portable Network Graphic (*.png)|*.png";
+        if (openFileDialog.ShowDialog() == true)
+        {
+            Image_Canvas.Source = new BitmapImage(new Uri(openFileDialog.FileName));
+            Image_Canvas.InvalidateVisual();
+        }
     }
 }
