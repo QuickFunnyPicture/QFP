@@ -1,13 +1,8 @@
-using QFP.Core.Settings;
-using QFP.Core.Tools;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using QFP.Core.Settings;
+using QFP.Core.Tools;
 
 namespace QFP.Core.Graphic;
 public class Canvas

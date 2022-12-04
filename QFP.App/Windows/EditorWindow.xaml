@@ -4,28 +4,141 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Editor" Height="450" Width="800"
+        Title="Editor" Height="720" Width="1280" MinHeight="450" MinWidth="800"
         Background="SlateGray">
     <Grid>
-        <Grid Margin="0,24,688,0">
-            <Button x:Name="Button_BrushMode" Content="Brush" HorizontalAlignment="Left" Margin="15,10,0,0" VerticalAlignment="Top" Click="Button_BrushMode_Click"/>
-            <Button x:Name="Button_EraseMode" Content="Eraser" HorizontalAlignment="Left" Margin="14,35,0,0" VerticalAlignment="Top" Click="Button_EraseMode_Click"/>
-            <Slider x:Name="Slider_Red" Margin="24,67,0,0" VerticalAlignment="Top" Maximum="255" HorizontalAlignment="Left" Width="64" ValueChanged="ColorSlider_ValueChanged"/>
-            <Slider x:Name="Slider_Green" Margin="24,90,0,0" VerticalAlignment="Top" Maximum="255" HorizontalAlignment="Left" Width="64" ValueChanged="ColorSlider_ValueChanged"/>
-            <Slider x:Name="Slider_Blue" Margin="24,113,0,0" VerticalAlignment="Top" Maximum="255" HorizontalAlignment="Left" Width="64" ValueChanged="ColorSlider_ValueChanged"/>
-            <Label Content="R" Margin="7,63,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="17"/>
-            <Label Content="G" Margin="6,86,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="18"/>
-            <Label Content="B" Margin="7,109,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="17"/>
-            <Image x:Name="Image_PickedColor" Height="65" Margin="88,67,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="20" Stretch="None"/>
+        <!--Tool Panel-->
+        <Grid Margin="0,58,0,0" HorizontalAlignment="Left" Width="90">
+            <!--Tools-->
+            <Button x:Name="Button_BrushMode" Background="SlateGray" BorderBrush="LightGray" Margin="10,10,0,0" VerticalAlignment="Top" Click="Button_BrushMode_Click" HorizontalAlignment="Left" Width="32">
+                <Image Source="../Resources/Icons/BrushIcon.png"></Image>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button x:Name="Button_EraseMode" Background="SlateGray" BorderBrush="LightGray" Margin="47,10,0,0" VerticalAlignment="Top" Click="Button_EraseMode_Click" HorizontalAlignment="Left" Width="32">
+                <Image Source="../Resources/Icons/EraseIcon.png"></Image>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Background="SlateGray" BorderBrush="LightGray" Margin="47,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="32">
+                <Image Source="/Resources/Icons/FillIcon.png"></Image>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Background="SlateGray" BorderBrush="LightGray" Margin="10,47,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="32">
+                <Image Source="/Resources/Icons/PenIcon.png"></Image>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Background="SlateGray" BorderBrush="LightGray" Margin="10,84,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70" Height="32">
+                <Image Source="/Resources/Icons/SelectAreaIcon.png"></Image>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Background="SlateGray" BorderBrush="LightGray" Margin="10,121,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="32">
+                <Image Source="/Resources/Icons/LensIcon.png"></Image>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Background="SlateGray" BorderBrush="LightGray" Margin="47,121,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="32">
+                <Image Source="/Resources/Icons/PipetteIcon.png"></Image>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Background="SlateGray" BorderBrush="LightGray" Margin="10,158,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="32">
+                <Image Source="/Resources/Icons/LineIcon.png"></Image>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Background="SlateGray" BorderBrush="LightGray" Margin="47,158,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="32">
+                <Image Source="/Resources/Icons/RectangleIcon.png"></Image>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Background="SlateGray" BorderBrush="LightGray" Margin="10,195,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="32">
+                <Image Source="/Resources/Icons/EllipseIcon.png"></Image>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Background="SlateGray" BorderBrush="LightGray" Margin="47,195,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="32">
+                <Image Source="/Resources/Icons/TextIcon.png"></Image>
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <!--Color Picker-->
+            <Slider x:Name="Slider_Red" Margin="24,267,0,0" VerticalAlignment="Top" Maximum="255" HorizontalAlignment="Left" Width="64" ValueChanged="ColorSlider_ValueChanged"/>
+            <Slider x:Name="Slider_Green" Margin="24,290,0,0" VerticalAlignment="Top" Maximum="255" HorizontalAlignment="Left" Width="64" ValueChanged="ColorSlider_ValueChanged"/>
+            <Slider x:Name="Slider_Blue" Margin="24,313,0,0" VerticalAlignment="Top" Maximum="255" HorizontalAlignment="Left" Width="64" ValueChanged="ColorSlider_ValueChanged"/>
+            <Label Content="R" Margin="7,263,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="17"/>
+            <Label Content="G" Margin="6,286,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="18"/>
+            <Label Content="B" Margin="7,309,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="17"/>
+
+            <Button Background="SlateGray" BorderBrush="LightGray" Margin="10,235,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70" Height="32">
+                <Image x:Name="Image_PickedColor" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70" Height="32" Stretch="None"/>
+            </Button>
+
+            <!--<Image x:Name="Image_PickedColor" Margin="10,232,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="70" Height="32" Stretch="None"/>-->
         </Grid>
-        <Grid Margin="117,24,0,0" Background="DimGray" x:Name="Grid_Canvas" MouseEnter="Grid_Canvas_MouseEnter" MouseLeave="Grid_Canvas_MouseLeave">
-            <Image x:Name="Image_Canvas" Margin="12,14,11,14" MouseMove="Image_Canvas_MouseMove"/>
+
+        <!--Canvas-->
+        <Grid Margin="98,58,0,0" Background="DimGray" x:Name="Grid_Canvas" MouseEnter="Grid_Canvas_MouseEnter" MouseLeave="Grid_Canvas_MouseLeave">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="308*"/>
+            </Grid.RowDefinitions>
+            <Image x:Name="Image_Canvas" Margin="12,14,11,14" MouseMove="Image_Canvas_MouseMove" Grid.RowSpan="2"/>
         </Grid>
-        <Grid Background="LightSlateGray" Height="20" VerticalAlignment="Top">
+
+        <!--Upper Menu-->
+        <Grid Background="LightSlateGray" Height="29" VerticalAlignment="Top">
             <ToolBarPanel>
-                <Menu Height="20" Background="{x:Null}">
-                    <MenuItem Header="File">
-                        <MenuItem x:Name="MenuItem_NewProject" Header="New Project..." Click="MenuItem_NewProject_Click"/>
+                <Menu Height="30" Background="{x:Null}">
+                    <MenuItem Header="File" Foreground="LightGray" FontSize="18">
+                        <MenuItem Foreground="Black" x:Name="MenuItem_NewProject" Header="New Project..." Click="MenuItem_NewProject_Click"/>
                         <MenuItem Header="Load Project..."/>
                         <Separator/>
                         <MenuItem Header="Save"/>
@@ -38,6 +151,17 @@
                     </MenuItem>
                 </Menu>
             </ToolBarPanel>
+        </Grid>
+
+        <!--Actions Menu-->
+        <Grid Background="LightSlateGray" Height="29" VerticalAlignment="Top" Margin="0,29,0,0">
+            <Button Background="Transparent" BorderBrush="Transparent" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="24">
+                <Image Source="/Resources/Abstract/ArrowLeft.png"></Image>
+            </Button>
+
+            <Button Background="Transparent" BorderBrush="Transparent" Margin="39,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="24">
+                <Image Source="/Resources/Abstract/ArrowRight.png"></Image>
+            </Button>
         </Grid>
 
     </Grid>

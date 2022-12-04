@@ -1,14 +1,40 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>disable</Nullable>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>disable</Nullable>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\QFP.Core\QFP.Core.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <Resource Include="Resources\Icons\BrushIcon.png" />
+        <Resource Include="Resources\Icons\EllipseIcon.png" />
+        <Resource Include="Resources\Icons\EraseIcon.png" />
+        <Resource Include="Resources\Icons\FillIcon.png" />
+        <Resource Include="Resources\Icons\LayerIcon.png" />
+        <Resource Include="Resources\Icons\LensIcon.png" />
+        <Resource Include="Resources\Icons\LineIcon.png" />
+        <Resource Include="Resources\Icons\PenIcon.png" />
+        <Resource Include="Resources\Icons\PipetteIcon.png" />
+        <Resource Include="Resources\Icons\SelectAreaIcon.png" />
+        <Resource Include="Resources\Abstract\ArrowDown.png" />
+        <Resource Include="Resources\Abstract\ArrowLeft.png" />
+        <Resource Include="Resources\Abstract\ArrowRight.png" />
+        <Resource Include="Resources\Abstract\ArrowUp.png" />
+        <Resource Include="Resources\Abstract\Canvas.png" />
+        <Resource Include="Resources\Abstract\Gear.png" />
+        <Resource Include="Resources\Abstract\Minus.png" />
+        <Resource Include="Resources\Abstract\Plus.png" />
+        <Resource Include="Resources\Icons\RectangleIcon.png" />
+        <Resource Include="Resources\Abstract\RectangleWithArrows.png" />
+        <Resource Include="Resources\Abstract\Sandwich.png" />
+        <Resource Include="Resources\Icons\TextIcon.png" />
+        <Resource Include="Resources\Abstract\ThreeDots.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\QFP.Core\QFP.Core.csproj" />
+    </ItemGroup>
 
 </Project>
