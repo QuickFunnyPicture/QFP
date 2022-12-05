@@ -1,8 +1,10 @@
 using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using QFP.App.Utils;
 using QFP.App.Windows;
 using QFP.Core.Graphic;
 using QFP.Core.Settings;
@@ -12,12 +14,13 @@ namespace QFP.App;
 
 public partial class EditorWindow : Window
 {
-    private Canvas Canvas { get; set; }
+    private Core.Graphic.Canvas Canvas { get; set; }
 
     private ITool CurrentTool { get; set; }
 
     private ImageSettings Settings { get; set; }
 
+    private Button CurrentToolButton { get; set; }
     private Cursor ToolCursor { get; set; }
 
     private BrushTool BrushTool { get; set; }
@@ -35,7 +38,7 @@ public partial class EditorWindow : Window
             DpiY = 72
         };
 
-        Canvas = new Canvas(Settings);
+        Canvas = new Core.Graphic.Canvas(Settings);
 
         BrushTool = new BrushTool(Brushes.Black, 2, 2);
         EraseTool = new BrushTool(Brushes.White, 2, 10);
@@ -75,14 +78,25 @@ public partial class EditorWindow : Window
 
     private void Button_BrushMode_Click(object sender, RoutedEventArgs e)
     {
-        CurrentTool = BrushTool;
-        ToolCursor = Cursors.Pen;
+        UpdateSelectedTool(BrushTool, Button_BrushMode, Cursors.Pen);
     }
 
     private void Button_EraseMode_Click(object sender, RoutedEventArgs e)
     {
-        CurrentTool = EraseTool;
-        ToolCursor = Cursors.Cross;
+        UpdateSelectedTool(EraseTool, Button_EraseMode, Cursors.Cross);
+    }
+
+    private void UpdateSelectedTool(ITool tool, Button toolButton, Cursor toolCursor)
+    {
+        if (CurrentToolButton != null)
+        {
+            CurrentToolButton.Background = InterfaceColorsConsts.Background;
+        }
+        CurrentToolButton = toolButton;
+        CurrentToolButton.Background = InterfaceColorsConsts.Selected;
+
+        CurrentTool = tool;
+        ToolCursor = toolCursor;
     }
 
     private void ColorSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -104,7 +118,7 @@ public partial class EditorWindow : Window
                 DpiX = cp.Dpi,
                 DpiY = cp.Dpi
             };
-            Canvas = new Canvas(Settings);
+            Canvas = new Core.Graphic.Canvas(Settings);
 
             Image_Canvas.Source = Canvas.Bitmap;
         }
